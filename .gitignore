@@ -1,0 +1,11 @@
+# Ignore environment variables file
+.env
+
+# Node.js dependencies
+node_modules/
+
+# Other common files to ignore
+.DS_Store
+dist/
+build/
+coverage/

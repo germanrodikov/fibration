@@ -1,41 +1,33 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./hedera/HederaConsensusService.sol"; 
+contract AdvancedHederaLogger {
+    event StateTransitionLogged(address indexed user, bytes32 stateHash, uint256 timestamp, string data);
 
-contract HederaStateLogger {
-    // logging state
-    event StateTransitionLogged(address indexed user, bytes32 stateHash, uint256 timestamp);
-
-    // hash state save
     bytes32 public currentStateHash;
+    mapping(uint256 => bytes32) public stateHistory;
+    uint256 public stateChangeCounter;
 
-    // init
     constructor() {
         currentStateHash = keccak256(abi.encodePacked(block.timestamp, msg.sender));
-        logStateTransition(currentStateHash);
+        stateHistory[stateChangeCounter] = currentStateHash;
+        emit StateTransitionLogged(msg.sender, currentStateHash, block.timestamp, "Initial State");
     }
 
-    // update stete
-    function updateState(bytes32 newStateHash) external {
+    function updateState(bytes32 newStateHash, string memory data) external {
         require(newStateHash != currentStateHash, "New state must be different from the current state");
         currentStateHash = newStateHash;
-        logStateTransition(newStateHash);
+        stateChangeCounter++;
+        stateHistory[stateChangeCounter] = newStateHash;
+        emit StateTransitionLogged(msg.sender, newStateHash, block.timestamp, data);
     }
 
-    // logging state on Hedera
-    function logStateTransition(bytes32 stateHash) internal {
-        uint256 currentTimestamp = block.timestamp;
-
-        // call HCS for saving and timestep
-        HederaConsensusService.logEvent(stateHash, currentTimestamp);
-
-        emit StateTransitionLogged(msg.sender, stateHash, currentTimestamp);
+    function getStateHistory(uint256 index) external view returns (bytes32) {
+        require(index <= stateChangeCounter, "Index out of bounds");
+        return stateHistory[index];
     }
 
-    // get current hash stete
     function getCurrentStateHash() external view returns (bytes32) {
         return currentStateHash;
     }
 }
-
