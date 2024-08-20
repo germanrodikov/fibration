@@ -2,6 +2,8 @@
 
 Welcome to Hedera's Rollup as a Service (RAAS) platform! This innovative solution empowers developers to create scalable, efficient, and compliant networks tailored to the modern multi-chain environment. Hedera RAAS overcomes the limitations of traditional, centralized Layer 2 designs by offering customizable smart contracts, fixed costs, and instant settlement options. Whether you're building a new decentralized ecosystem or enhancing an existing one, Hedera RAAS provides the tools you need to succeed.
 
+![Fibration Flow](./pic/Fibration_flow.jpg)
+
 ## Table of Contents
 - [Overview](#overview)
 - [Key Components](#key-components)
@@ -68,7 +70,7 @@ This function is designed to be called by the execution environment. It updates 
 2. **Monitor Events**: Listen for the `StateProcessed` event to confirm that the new state has been processed successfully.
 
 ## Integration Strategy
-For a detailed guide on integrating and deploying smart contracts on the Hedera network, refer to the [official Hedera documentation](https://docs.hedera.com/hedera/tutorials/smart-contracts/deploy-your-first-smart-contract).
+For a detailed guide on integrating and deploying smart contracts on the Hedera network, refer to the official Hedera documentation.
 
 ## Transaction Workflow
 
@@ -86,11 +88,6 @@ To get started with Hedera RAAS, follow these steps:
 3. Implement off-chain logic for transaction batching and state commitment.
 4. Use the provided contract interface to interact with your deployed contract.
 5. Integrate the execution environment logic to trigger and process state updates.
-
-## Documentation and Resources
-
-For further information and detailed tutorials, please visit the [Hedera documentation](https://docs.hedera.com/hedera/tutorials/smart-contracts/deploy-your-first-smart-contract). Explore how to deploy your first smart contract, integrate Hedera services, and much more.
-
 ---
 
 Join the next generation of decentralized innovation with Fibration: Hedera Hashgraph RAAS Platform and revolutionize how Layer 2 solutions are built and managed!
