@@ -1,0 +1,23 @@
+{
+  "name": "fibration",
+  "version": "1.0.0",
+  "description": "Welcome to Hedera's Rollup as a Service (RAAS) platform! This innovative solution empowers developers to create scalable, efficient, and compliant networks tailored to the modern multi-chain environment. Hedera RAAS overcomes the limitations of traditional, centralized Layer 2 designs by offering customizable smart contracts, fixed costs, and instant settlement options. Whether you're building a new decentralized ecosystem or enhancing an existing one, Hedera RAAS provides the tools you need to succeed.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/germanrodikov/fibration.git"
+  },
+  "author": "german-rodikov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/germanrodikov/fibration/issues"
+  },
+  "homepage": "https://github.com/germanrodikov/fibration#readme",
+  "dependencies": {
+    "@hashgraph/sdk": "^2.24.2",
+    "dotenv": "^16.4.5"
+  }
+}

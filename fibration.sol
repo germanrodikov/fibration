@@ -1,33 +1,45 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.0;
 
-contract AdvancedHederaLogger {
-    event StateTransitionLogged(address indexed user, bytes32 stateHash, uint256 timestamp, string data);
+contract Fibration {
+    // Struct to hold the Merkle root and the associated timestamp
+    struct StateCommitment {
+        bytes32 merkleRoot;
+        uint256 timestamp;
+    }
 
-    bytes32 public currentStateHash;
-    mapping(uint256 => bytes32) public stateHistory;
-    uint256 public stateChangeCounter;
+    // Mapping of batch ID to state commitment
+    mapping(uint256 => StateCommitment) private stateCommitments;
+
+    // Counter to track the current batch ID
+    uint256 private currentBatchId;
+
+    // Event emitted when a new state is committed
+    event StateCommitted(uint256 batchId, bytes32 merkleRoot, uint256 timestamp);
 
     constructor() {
-        currentStateHash = keccak256(abi.encodePacked(block.timestamp, msg.sender));
-        stateHistory[stateChangeCounter] = currentStateHash;
-        emit StateTransitionLogged(msg.sender, currentStateHash, block.timestamp, "Initial State");
+        currentBatchId = 0; // Initialize the batch ID counter
     }
 
-    function updateState(bytes32 newStateHash, string memory data) external {
-        require(newStateHash != currentStateHash, "New state must be different from the current state");
-        currentStateHash = newStateHash;
-        stateChangeCounter++;
-        stateHistory[stateChangeCounter] = newStateHash;
-        emit StateTransitionLogged(msg.sender, newStateHash, block.timestamp, data);
+    // Function to commit a new state (Merkle root)
+    function commitState(bytes32 _merkleRoot) external returns (uint256) {
+        stateCommitments[currentBatchId] = StateCommitment({
+            merkleRoot: _merkleRoot,
+            timestamp: block.timestamp
+        });
+
+        emit StateCommitted(currentBatchId, _merkleRoot, block.timestamp);
+
+        currentBatchId++;
+
+        return currentBatchId - 1; // Return the batch ID of the committed state
     }
 
-    function getStateHistory(uint256 index) external view returns (bytes32) {
-        require(index <= stateChangeCounter, "Index out of bounds");
-        return stateHistory[index];
-    }
+    // Function to retrieve the Merkle root for a given batch ID
+    function getStateRoot(uint256 _batchId) external view returns (bytes32, uint256) {
+        require(_batchId < currentBatchId, "Invalid batch ID");
 
-    function getCurrentStateHash() external view returns (bytes32) {
-        return currentStateHash;
+        StateCommitment memory commitment = stateCommitments[_batchId];
+        return (commitment.merkleRoot, commitment.timestamp);
     }
 }
