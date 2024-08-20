@@ -1,6 +1,6 @@
 const { commitState } = require("./commitState");
 const { generateMerkleRoot } = require("./merkleService");
-const { loadTransactions, clearTransactions } = require("./transactionService"); // Correctly import clearTransactions
+const { loadTransactions, clearTransactions } = require("./transactionService");
 
 let currentBatchId = 0;
 
@@ -17,14 +17,14 @@ async function processBatch(contractId) {
         console.log(`Generated Merkle Root for batch ${currentBatchId}:`, merkleRoot);
 
         // Commit the Merkle Root to the smart contract
-        await commitState(contractId, Buffer.from(merkleRoot, 'hex'));
-        console.log(`Batch ${currentBatchId} processed and state committed successfully.`);
+        const status = await commitState(contractId, Buffer.from(merkleRoot, 'hex'));
+        console.log(`Batch ${currentBatchId} processed and state committed successfully with status: ${status}.`);
 
         // Increment the batch ID for the next batch
         currentBatchId++;
 
         // Clear the transactions after committing the batch
-        clearTransactions(); // This should now be recognized
+        clearTransactions();
     } catch (error) {
         console.error("Error processing batch:", error);
     }

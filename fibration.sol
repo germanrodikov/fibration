@@ -14,8 +14,14 @@ contract Fibration {
     // Counter to track the current batch ID
     uint256 private currentBatchId;
 
+    // Variable to hold the latest state
+    bytes32 public latestState;
+
     // Event emitted when a new state is committed
     event StateCommitted(uint256 batchId, bytes32 merkleRoot, uint256 timestamp);
+
+    // Event emitted when a new state is processed
+    event StateProcessed(bytes32 newState);
 
     constructor() {
         currentBatchId = 0; // Initialize the batch ID counter
@@ -41,5 +47,14 @@ contract Fibration {
 
         StateCommitment memory commitment = stateCommitments[_batchId];
         return (commitment.merkleRoot, commitment.timestamp);
+    }
+
+    // Function to process a new state (this will be called from the execution environment)
+    function processNewState(bytes32 _newState) external {
+        // Update the latest state with the provided new state
+        latestState = _newState;
+
+        // Emit an event to signal that the state has been processed
+        emit StateProcessed(_newState);
     }
 }

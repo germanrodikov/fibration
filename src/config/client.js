@@ -1,4 +1,3 @@
-// src/config/client.js
 require("dotenv").config();
 const { AccountId, PrivateKey, Client } = require("@hashgraph/sdk");
 

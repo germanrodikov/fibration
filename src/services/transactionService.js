@@ -22,5 +22,5 @@ function clearTransactions() {
 module.exports = {
     loadTransactions,
     saveTransaction,
-    clearTransactions, 
+    clearTransactions,
 };
